@@ -7,7 +7,7 @@
         </div>
       </div>
 
-      <div class=" six wide column">
+      <div class=" five wide column">
         <div class="ui list">
           <div class="item">
             <img class="ui avatar image" src="src/imgs/matt.jpg">
@@ -50,7 +50,8 @@
     },
     methods: {
       submit() {
-        Chat.submit(this.messageData)
+        Chat.submit(this.messageData);
+        this.messageData = '';
       }
     }
   };

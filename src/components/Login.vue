@@ -46,8 +46,8 @@
             return
         }
         Chat.init(this.name);
-        sessionStorage.setItem('userId', getUserId());
-        sessionStorage.setItem('name', this.name);
+        localStorage.setItem('userId', getUserId());
+        localStorage.setItem('name', this.name);
         location.hash = '/Room'
       }
     }

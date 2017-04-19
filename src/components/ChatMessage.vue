@@ -27,7 +27,7 @@
     name: 'ChatMessage',
     data() {
       return {
-        myId: sessionStorage.userId,
+        myId: localStorage.userId,
         self: 'self',
         other: 'other',
       }
