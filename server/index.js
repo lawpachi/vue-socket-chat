@@ -15,27 +15,44 @@ let onlineUsers = {};
 //当前在线人数
 let onlineCount = 0;
 
+let chatRecord = [];
+function fsExistsSync() {
+  try{
+    fs.accessSync('chat.json');
+  }catch(e){
+    return false;
+  }
+  return true;
+}
+function writeFile(chat) {
+  chatRecord.push(chat);
+  fs.writeFile('chat.json', JSON.stringify(chatRecord), function(){
+    console.log('不存在，被创建了！');
+  });
+}
+
 io.on('connection', function (socket) {
   socket.on('login', function (obj) {
     socket.name = obj.userId;
     if(onlineUsers[obj.userId]) {
       return
     };
+    if(fsExistsSync()){
+      fs.readFile('chat.json',  function(err,data){
+        chatRecord = chatRecord.concat(data);
+      });
+    }
+    writeFile(obj);
     onlineCount ++;
-    onlineUsers[obj.userId] = obj
+    onlineUsers[obj.userId] = obj;
     io.emit('allLogin', {login: true, onlineUsers: onlineUsers, onlineCount:onlineCount, user:obj  })
   });
   socket.on('message', function (message) {
     io.emit('allMessage', message)
+    writeFile(message);
   })
+});
 
-});
-fs.writeFile('test.json', '文件不存在，则创建', function(){
-  console.log('不存在，被创建了！');
-});
-fs.readFile('test.json',  function(err,data){
-  console.log('存在！' + data);
-});
 
 http.listen(3080, function(){
 
@@ -111,7 +128,7 @@ function processRequest (request, response) {
     }
     //读取文件的函数
     function readFile(filePath, contentType){
-      response.writeHead(200, { "content-type": contentType });
+      response.writeHead(200, { "content-type": contentType, "Access-Control-Allow-Origin": '*' });
       //建立流对象，读文件
       var stream = fs.createReadStream(filePath);
       //错误处理

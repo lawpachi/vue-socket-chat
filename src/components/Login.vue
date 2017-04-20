@@ -37,6 +37,12 @@
     },
     components: {
     },
+    mounted() {
+      Chat.init();
+      if( localStorage.getItem('userId')){
+        location.hash = '/Room'
+      }
+    },
     computed: {
 
     },
@@ -45,7 +51,7 @@
         if(!this.name.trim()) {
             return
         }
-        Chat.init(this.name);
+        Chat.login(this.name);
         localStorage.setItem('userId', getUserId());
         localStorage.setItem('name', this.name);
         location.hash = '/Room'

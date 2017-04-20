@@ -47,6 +47,14 @@
 
     },
     mounted (){
+      if(!Chat.socket){
+        Chat.init()
+      }
+      fetch('http://localhost:3080/chat.json').then((res) => {
+        return res.json();
+      }).then((data) => {
+        this.Chat.msgArr = this.Chat.msgArr.concat(data)
+      })
     },
     methods: {
       submit() {
