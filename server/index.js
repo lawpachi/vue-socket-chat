@@ -27,22 +27,25 @@ function fsExistsSync() {
 function writeFile(chat) {
   chatRecord.push(chat);
   fs.writeFile('chat.json', JSON.stringify(chatRecord), function(){
-    console.log('不存在，被创建了！');
   });
 }
 
 io.on('connection', function (socket) {
   socket.on('login', function (obj) {
+    console.log('login obj', obj);
     socket.name = obj.userId;
     if(onlineUsers[obj.userId]) {
       return
     };
+    console.log('fsExistsSync()', fsExistsSync());
     if(fsExistsSync()){
       fs.readFile('chat.json',  function(err,data){
+        console.log('befor concat', chatRecord.length);
         chatRecord = chatRecord.concat(data);
+        console.log('after concat', chatRecord.length);
       });
     }
-    writeFile(obj);
+    writeFile({login: true, onlineUsers: onlineUsers, onlineCount:onlineCount, user:obj  });
     onlineCount ++;
     onlineUsers[obj.userId] = obj;
     io.emit('allLogin', {login: true, onlineUsers: onlineUsers, onlineCount:onlineCount, user:obj  })

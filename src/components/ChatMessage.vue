@@ -1,6 +1,6 @@
 <template>
-  <div class="ui comments" id="message" >
-    <div class="ten wide column message-box">
+  <div class="ui comments"  >
+    <div class="ten wide column message-box" id="message">
       <div v-for="data in message">
         <div class="comment login-prompt" v-if="data.login">{{data.user.name}} 加入群聊</div>
         <div v-else-if="data.message">
@@ -34,7 +34,8 @@
     },
     props: ['message'],
     updated() {
-
+      let div = document.getElementById('message');
+      div.scrollTop = div.scrollHeight;
     },
     mounted () {
 

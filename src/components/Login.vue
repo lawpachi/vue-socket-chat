@@ -51,9 +51,9 @@
         if(!this.name.trim()) {
             return
         }
-        Chat.login(this.name);
         localStorage.setItem('userId', getUserId());
         localStorage.setItem('name', this.name);
+        Chat.login(this.name);
         location.hash = '/Room'
       }
     }
