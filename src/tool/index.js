@@ -10,6 +10,9 @@ export  function getUserId () {
   return new Date().getTime()+text;
 };
 
+function amend(num) {
+  return num = num.length ===1 ? '0'+num : num
+}
 export  function getNowTime() {
   let date = new Date();
   let year = date.getFullYear();
@@ -17,5 +20,6 @@ export  function getNowTime() {
   let day = date.getDay();
   let hours = date.getHours();
   let min = date.getMinutes();
-  return year + '-' + month + '-' + day + ' ' + hours +':'+ min;
+  let second = date.getSeconds();
+  return year + '-' + month + '-' + day + ' ' + amend(hours) +':'+ amend(min) +':'+ amend(second);
 }

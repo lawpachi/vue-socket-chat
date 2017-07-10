@@ -25,6 +25,7 @@
   </transition>
 </template>
 <script>
+  const host = 'http://localhost:3080'
   const NS = 'login';
   import Chat from '../client'
   import { getUserId } from '../tool'
@@ -51,10 +52,20 @@
         if(!this.name.trim()) {
             return
         }
-        localStorage.setItem('userId', getUserId());
-        localStorage.setItem('name', this.name);
-        Chat.login(this.name);
-        location.hash = '/Room'
+        fetch(host+'/login/'+this.name ,{
+          withCredentials:"true"
+        }).then((respon)=>{
+          return respon.json()
+        }).then((data)=>{
+            if(data.insertId){ // 新加入的成员
+              localStorage.setItem('userId', data.insertId)
+              Chat.login(this.name);
+            }else{
+              localStorage.setItem('userId', data.userId)
+            }
+            localStorage.setItem('name', this.name);
+            location.hash = '/Room'
+        });
       }
     }
   };

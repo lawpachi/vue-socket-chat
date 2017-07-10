@@ -1,10 +1,11 @@
 <template>
   <div class="ui comments"  >
     <div class="ten wide column message-box" id="message">
-      <div v-for="data in message">
-        <div class="comment login-prompt" v-if="data.login">{{data.user.name}} 加入群聊</div>
+      <div v-for="data in message" :key="data.id" class="each-row">
+        <div class="comment login-prompt" v-if="data.login === 1">{{data.name}} 加入群聊</div>
+        <div class="comment login-prompt" v-else-if="data.login === 2">{{data.name}} 退出群聊</div>
         <div v-else-if="data.message">
-          <div :class="[(myId==data.userId)? self : other]" class="comment"  >
+          <div :class="[(myName===data.name)? self : other]" class="comment"  >
             <a class="avatar">
               <a class="author">{{data.name}}</a>
             </a>
@@ -27,7 +28,7 @@
     name: 'ChatMessage',
     data() {
       return {
-        myId: localStorage.userId,
+        myName: localStorage.name,
         self: 'self',
         other: 'other',
       }
@@ -38,7 +39,6 @@
       div.scrollTop = div.scrollHeight;
     },
     mounted () {
-
     },
     methods:{
     }
@@ -111,6 +111,9 @@
     border-right: 5px solid #FFFFFF;
     left: -10px;
     top: 10px;
+  }
+  .each-row{
+    padding: 5px 10px;
   }
 </style>
 
